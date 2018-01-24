@@ -1,0 +1,55 @@
+
+  <view class="container">
+    <view class="a-box">
+      <block wx:for="{{aModel}}" wx:for-index="index" wx:for-item="item" wx:key="index">
+        <A  v-bind:item.once="item"/>
+    </block>
+    </view>
+    <view class="b-box">
+      <block wx:for="{{bList}}" wx:for-index="index" wx:for-item="item" wx:key="index">
+        <B  v-bind:item.once="item"/>
+      </block>
+    </view>
+    
+    <HomeErrorView v-bind:showErrorView.once="{{homeModel.errorView}}"/>
+    <view class="orderinfo-container" hidden="{{!homeModel.defaultView}}">
+      <view class="userinfo" bindtap="handleUserInfoTap">
+        <image class="userinfo-avatar" src="{{ homeModel.userInfo.avatarUrl }}" mode="aspectFill"/>
+        <view class="userinfo-nickname">{{ homeModel.userInfo.nickName || "" }}</view>
+        <view class="userinfo-residueDegree-container" hidden="{{homeModel.residueDegree == -1}}">
+          <view class="userinfo-livecount" style="color: {{homeModel.residueDegree > 5 ? '#333' : '#f05853'}}">
+            剩余直播数：{{homeModel.residueDegree || 0}}次
+          </view>
+        </view>
+        
+        <view class="userinfo-btninfo">
+          <button class="userinfo-btninfo-recharge" open-type="contact" hidden="{{homeModel.residueDegree == -1}}" bindtap="handleUserInfoTap">
+            充值
+          </button>
+        </view>
+      </view>
+      <HomeTabListView/> 
+      <view class="orderlist-info" hidden="{{ homeModel.listType == '3' ? true:false }}">
+        <OrderEmptyView/>
+        <view class="orderlist-info-createBtn" bindtap="handleAddOrder" hover-class="hoverBtn" hover-stay-time="50">
+            <text class="orderlist-info-createBtnText">新建订单</text>
+        </view>
+        <block wx:for="{{homeModel.showList}}" wx:for-index="index" wx:for-item="item" wx:key="index">
+          <OrderItem v-bind:item.sync="item" v-bind:index.once="index"/>
+        </block>
+      </view>
+      <view class="visited-live-container" hidden="{{ homeModel.listType == '3' ? false:true }}">
+        <block wx:for="{{ homeModel.orderHistoryList }}" wx:for-index="index" wx:for-item="item" wx:key="index">
+          <VisitedLiveItemView v-bind:item.sync="item" v-bind:index.once="index"/>
+        </block>
+      </view>
+      <view class="loading-info" hidden="{{homeModel.listType == '3' ? homeModel.orderHistoryList.length == 0 : homeModel.showList.length == 0}}" style="margin-bottom: {{homeModel.listType == '3' ? '0rpx' : '140rpx'}}">
+          <view class="loading-info-leftLine"/>
+          <view class="loading-info-centerText">{{homeModel.footText}}</view>
+          <view class="loading-info-rightLine"/>
+      </view>
+    </view>
+
+
+<style lang="less" src="index.less"/>
+<script lang="typescript" src="./index.ts"/></view>

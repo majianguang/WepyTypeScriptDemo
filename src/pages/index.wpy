@@ -1,0 +1,64 @@
+
+<template>
+  <view class="container">
+    <view class="a-box">
+      <repeat for="{{aModel}}" key="index" index="index" item="item">
+        <A :item="item"></A>
+    </repeat>
+    </view>
+    <view class="b-box">
+      <repeat for="{{bList}}" key="index" index="index" item="item">
+        <B :item="item"></B>
+      </repeat>
+    </view>
+    
+    <HomeErrorView :showErrorView="{{homeModel.errorView}}" ></HomeErrorView>
+    <view class="orderinfo-container" hidden="{{!homeModel.defaultView}}">
+      <view class="userinfo" @tap="handleUserInfoTap">
+        <image class="userinfo-avatar" src="{{ homeModel.userInfo.avatarUrl }}" mode="aspectFill" />
+        <view class="userinfo-nickname">{{ homeModel.userInfo.nickName || "" }}</view>
+        <view class = "userinfo-residueDegree-container" hidden="{{homeModel.residueDegree == -1}}">
+          <view class="userinfo-livecount" style="color: {{homeModel.residueDegree > 5 ? '#333' : '#f05853'}}">
+            剩余直播数：{{homeModel.residueDegree || 0}}次
+          </view>
+        </view>
+        
+        <view class="userinfo-btninfo">
+          <button class="userinfo-btninfo-recharge" 
+                  open-type="contact" 
+                  hidden="{{homeModel.residueDegree == -1}}" 
+                  @tap="handleUserInfoTap">
+            充值
+          </button>
+        </view>
+      </view>
+      <HomeTabListView /> 
+      <view class="orderlist-info" hidden="{{ homeModel.listType == '3' ? true:false }}">
+        <OrderEmptyView></OrderEmptyView>
+        <view class="orderlist-info-createBtn" 
+              @tap="handleAddOrder" 
+              hover-class="hoverBtn" 
+              hover-stay-time="50">
+            <text class="orderlist-info-createBtnText">新建订单</text>
+        </view>
+        <repeat for="{{homeModel.showList}}" key="index" item="item">
+          <OrderItem :item.sync="item" :index="index"></OrderItem>
+        </repeat>
+      </view>
+      <view class="visited-live-container" hidden="{{ homeModel.listType == '3' ? false:true }}">
+        <repeat for="{{ homeModel.orderHistoryList }}" key="index" item="item">
+          <VisitedLiveItemView :item.sync="item" :index="index"></VisitedLiveItemView>
+        </repeat>
+      </view>
+      <view class="loading-info" 
+            hidden="{{homeModel.listType == '3' ? homeModel.orderHistoryList.length == 0 : homeModel.showList.length == 0}}" 
+            style="margin-bottom: {{homeModel.listType == '3' ? '0rpx' : '140rpx'}}">
+          <view class="loading-info-leftLine"></view>
+          <view class="loading-info-centerText">{{homeModel.footText}}</view>
+          <view class="loading-info-rightLine"></view>
+      </view>
+    </view>
+</template>
+
+<style lang="less" src="index.less"></style>
+<script lang="typescript" src ="./index.ts"></script>

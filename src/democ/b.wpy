@@ -1,0 +1,9 @@
+<template>
+  <view class="b-container">
+    <text>{{item.id}}</text>
+    <text>{{item.name}}</text>
+  </view>
+</template>
+
+<style lang="less" src="b.less"></style>
+<script lang="typescript" src ="./b.ts"></script>

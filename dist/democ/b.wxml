@@ -1,0 +1,5 @@
+
+  <view class="b-container">
+    <text>{{item.id}}</text>
+    <text>{{item.name}}</text>
+  </view>
